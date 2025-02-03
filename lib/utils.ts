@@ -10,7 +10,7 @@ export const formatNumber = (num: number): string => {
   return decimal ? `${int}.${decimal.padEnd(2, '0')}` : int
 }
 
-export const toslug = (text: string): string =>
+export const toSlug = (text: string): string =>
   text
     .toLowerCase()
     .replace(/[^\w\s-]+/g, '')

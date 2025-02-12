@@ -1,5 +1,6 @@
 import Carouselhome from '@/components/shared/home/Carousel'
 import Homecard from '@/components/shared/home/Homecard'
+import Product from '@/components/shared/product/product-price'
 import {
   getAllCategories,
   getProductsForCard,
@@ -63,6 +64,12 @@ export default async function Home() {
       <div className='md:p-4 md:space-y-4 bg-border'>
         <Homecard cards={cards} />
       </div>
+      {/* <Product
+        price={49.99}
+        listPrice={110}
+        isDeal={true}
+        className='text-lg text-gray-800'
+      /> */}
     </div>
   )
 }

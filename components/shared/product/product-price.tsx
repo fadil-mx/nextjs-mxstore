@@ -1,3 +1,4 @@
+'use client'
 import { cn, formatCurrency } from '@/lib/utils'
 import React from 'react'
 
@@ -10,7 +11,7 @@ type Props = {
   plain?: boolean
 }
 
-const Product = ({
+const ProductPrice = ({
   price,
   isDeal = false,
   listPrice = 0,
@@ -32,12 +33,14 @@ const Product = ({
       {intvalue} <span className='text-xs align-super'>{floatvalue}</span>
     </div>
   ) : isDeal ? (
-    <div className='space-y-2'>
+    <div className='space-y-2 '>
       <div className=' flex justify-center items-center gap-2'>
         <span className='bg-red-700 rounded-sm p-1 text-white text-sm font-semibold'>
           {discountPercentage}% off
         </span>
-        <span className='bg-red-700 text-xs font-bold'>Limited time deal</span>
+        <span className='text-red-700 text-xs font-bold'>
+          Limited time deal
+        </span>
       </div>
       <div
         className={cn(
@@ -75,4 +78,4 @@ const Product = ({
   )
 }
 
-export default Product
+export default ProductPrice

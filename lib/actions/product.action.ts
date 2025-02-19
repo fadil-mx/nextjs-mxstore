@@ -34,7 +34,7 @@ export async function getProductsForCard({
     name: string
     href: string
     image: string
-  }
+  }[]
 }
 
 export async function getProductByTag({
@@ -47,7 +47,7 @@ export async function getProductByTag({
   await connectDB()
   const products = await product
     .find({
-      tag: { $in: [tag] },
+      tags: { $in: [tag] },
       isPublished: true,
     })
     .sort({ createdAt: 'desc' })

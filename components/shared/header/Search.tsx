@@ -11,9 +11,8 @@ import { Input } from '@/components/ui/input'
 import { APP_NAME } from '@/lib/constants'
 import { SearchIcon } from 'lucide-react'
 
-type Props = {}
 const categories = ['men', 'women', 'kids', 'accessories']
-const Search = (props: Props) => {
+const Search = () => {
   return (
     <form action='/search' method='get' className='flex items-stretch h-10 '>
       <Select name='catagory'>

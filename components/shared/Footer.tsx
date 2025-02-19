@@ -3,7 +3,6 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { ChevronUp } from 'lucide-react'
 import Link from 'next/link'
-import { APP_NAME } from '@/lib/constants'
 
 const Footer = () => {
   return (
@@ -15,7 +14,7 @@ const Footer = () => {
         
         '
           onClick={() => {
-            Window.scrollTo({ top: 0, behavior: 'smooth' })
+            window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         >
           <ChevronUp className='mr-2' />

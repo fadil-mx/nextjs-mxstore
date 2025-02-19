@@ -71,7 +71,7 @@ const Productcard = ({
     </div>
   )
   return hideborder ? (
-    <div className='flex flex-col border-2 border-red-800'>
+    <div className='flex flex-col'>
       <ProductImage />
       {!hiddeDetails && (
         <>

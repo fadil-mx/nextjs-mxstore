@@ -1,7 +1,6 @@
 'use client'
 import React, { useRef } from 'react'
 
-import { Card, CardContent } from '@/components/ui/card'
 import {
   Carousel,
   CarouselContent,
@@ -19,7 +18,7 @@ type Props = {
     image: string
     title: string
     url: string
-    buttonCaption: string
+    buttonCaption?: string
   }[]
 }
 

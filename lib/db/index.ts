@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const cached = (global as any).mongoose || { conn: null, promise: null }
+const cached = global.mongoose || { conn: null, promise: null }
 export const connectDB = async (MONOD_URL = process.env.MONGO_URL) => {
   if (cached.conn) {
     console.log('=> using existing database connection')

@@ -1,9 +1,12 @@
 import Carouselhome from '@/components/shared/home/Carousel'
 import Homecard from '@/components/shared/home/Homecard'
+import Productgallery from '@/components/shared/product/Productgallery'
 import ProductSlider from '@/components/shared/product/productSlider'
+import Selectvariant from '@/components/shared/product/Selectvariant'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   getAllCategories,
+  getProductBySlug,
   getProductByTag,
   getProductsForCard,
 } from '@/lib/actions/product.action'
@@ -64,7 +67,7 @@ export default async function Home() {
   const todayDeal = await getProductByTag({ tag: 'todays-deal', limit: 10 })
   const bestSelling = await getProductByTag({ tag: 'best-seller', limit: 10 })
   // console.log(todayDeal)
-
+  let imge = ['/images/p11-1.jpg', '/images/p11-2.jpg']
   return (
     <div className=''>
       <Carouselhome items={data.carousels} />
@@ -89,6 +92,9 @@ export default async function Home() {
             />
           </CardContent>
         </Card>
+
+        <Productgallery image={imge} />
+        <Selectvariant product={todayDeal[0]} size='XXL' color='blue' />
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 'use server'
 
+import { PAGE_SIZE } from '../constants'
 import { connectDB } from '../db'
 import product, { IProduct } from '../db/models/productmodel'
 
@@ -54,4 +55,44 @@ export async function getProductByTag({
     .limit(limit)
 
   return JSON.parse(JSON.stringify(products)) as IProduct[]
+}
+
+export async function getProductBySlug(slug: string) {
+  await connectDB()
+  const products = await product.findOne({ slug, isPublished: true })
+  if (!products) throw new Error('Product not found')
+  return JSON.parse(JSON.stringify(products)) as IProduct
+}
+
+export async function getRelatedProductsByCategory({
+  category,
+  productId,
+  limit = PAGE_SIZE,
+  page = 1,
+}: {
+  category: string
+  productId: string
+  limit?: number
+  page?: number
+}) {
+  await connectDB()
+  const skip = (Number(page) - 1) * limit
+  const products = await product
+    .find({
+      isPublished: true,
+      category,
+      _id: { $ne: productId },
+    })
+    .sort({ createdAt: 'desc' })
+    .skip(skip)
+    .limit(limit)
+  const productsCount = await product.countDocuments({
+    isPublished: true,
+    category,
+    _id: { $ne: productId },
+  })
+  return {
+    data: JSON.parse(JSON.stringify(products)) as IProduct[],
+    totalPage: Math.ceil(productsCount / limit),
+  }
 }

@@ -48,6 +48,7 @@ const ProductDetail = async ({
 
     page: Number(page),
   })
+  // console.log(relatedProducts.data.length)
   return (
     <div>
       <section>

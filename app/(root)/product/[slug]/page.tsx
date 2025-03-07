@@ -10,6 +10,8 @@ import ProductPrice from '@/components/shared/product/product-price'
 import Selectvariant from '@/components/shared/product/Selectvariant'
 import { Card, CardContent } from '@/components/ui/card'
 import ProductSlider from '@/components/shared/product/productSlider'
+import BrowsingHistory from '@/components/shared/BrowsingHistory'
+import Addtobrowsinghistory from '@/components/shared/product/Add-to-browsing-history'
 
 export async function generateMetadata(props: {
   params: Promise<{
@@ -51,6 +53,7 @@ const ProductDetail = async ({
   // console.log(relatedProducts.data.length)
   return (
     <div>
+      <Addtobrowsinghistory id={product._id} category={product.category} />
       <section>
         <div className='grid grid-cols-2 md:grid-cols-5'>
           <div className='col-span-2'>
@@ -117,6 +120,9 @@ const ProductDetail = async ({
           products={relatedProducts.data}
           title={`Best Seller in ${product.category}`}
         />
+      </section>
+      <section className=' bg-background'>
+        <BrowsingHistory className='mt-10' />
       </section>
     </div>
   )

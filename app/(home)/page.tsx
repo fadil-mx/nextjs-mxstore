@@ -1,3 +1,4 @@
+import BrowsingHistory from '@/components/shared/BrowsingHistory'
 import Carouselhome from '@/components/shared/home/Carousel'
 import Homecard from '@/components/shared/home/Homecard'
 import Productgallery from '@/components/shared/product/Productgallery'
@@ -91,9 +92,9 @@ export default async function Home() {
             />
           </CardContent>
         </Card>
-
-        <Productgallery image={imge} />
-        <Selectvariant product={todayDeal[0]} size='XXL' color='blue' />
+      </div>
+      <div className=''>
+        <BrowsingHistory />
       </div>
     </div>
   )

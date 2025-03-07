@@ -23,21 +23,32 @@ const ProductList = ({
   const [data, setdata] = useState([])
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch(
-        `/api/products/browsing-history?type=${type}&categories=${products
-          .map((p) => p.category)
-          .join(',')}&ids=${products.map((p) => p.id).join(',')}`
-      )
-      const data = await res.json()
-      setdata(data)
+      if (products.length === 0) return // Prevents unnecessary fetch when no products exist
+
+      try {
+        const res = await fetch(
+          `/api/products/browsing-history?type=${type}&categories=${products
+            .map((p) => p.category)
+            .join(',')}&ids=${products.map((p) => p.id).join(',')}`
+        )
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch browsing history')
+        }
+
+        const data = await res.json()
+
+        setdata(data)
+      } catch (error) {
+        console.error('Error fetching browsing history:', error)
+      }
     }
+
+    fetchProducts()
   }, [products, type])
   return (
     data.length !== 0 && (
-      <ProductSlider
-        title={title}
-        products={data}
-        hideDetails={hideDetails}
+      <ProductSlider title={title} products={data} hideDetails={hideDetails} />
     )
   )
 }
@@ -52,6 +63,7 @@ const BrowsingHistory = ({ className }: Props) => {
           title={"Related to items that you've viewed"}
           type='related'
         />
+
         <Separator className='mb-4' />
         <ProductList
           title={'Your browsing history'}

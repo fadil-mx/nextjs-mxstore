@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import ProductSlider from '@/components/shared/product/productSlider'
 import BrowsingHistory from '@/components/shared/BrowsingHistory'
 import Addtobrowsinghistory from '@/components/shared/product/Add-to-browsing-history'
+import Addtocart from '@/components/shared/product/Addtocart'
 
 export async function generateMetadata(props: {
   params: Promise<{
@@ -50,6 +51,21 @@ const ProductDetail = async ({
 
     page: Number(page),
   })
+
+  const testOrderItem = {
+    clientId: '12345',
+    product: 'abc123',
+    name: 'Sample Product',
+    slug: 'sample-product',
+    category: 'electronics',
+    quantity: 2,
+    countInstock: 35,
+    image: 'https://example.com/product-image.jpg',
+    price: 49.99,
+    size: 'M',
+    color: 'Red',
+  }
+
   // console.log(relatedProducts.data.length)
   return (
     <div>
@@ -110,11 +126,13 @@ const ProductDetail = async ({
                 ) : (
                   <div className='text-destructive text-xl '> Out of Stock</div>
                 )}
+                <Addtocart item={testOrderItem} />
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
+
       <section className='mt-10'>
         <ProductSlider
           products={relatedProducts.data}

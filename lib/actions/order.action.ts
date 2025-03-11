@@ -9,18 +9,18 @@ export const calDeliveryDateAndPrice = async ({
   deliveryDateIndex?: number
   items: orderItem[]
 }) => {
-  const itemsprice = round2(
-    items.reduce((acc, item) => acc + item.price * item.quentity, 0)
+  const itemsPrice = round2(
+    items.reduce((acc, item) => acc + item.price * item.quantity, 0)
   )
-  const shippingPrice = itemsprice > FREE_SHIPPING_MIN_PRICE ? 0 : 5
-  const taxPrice = round2(itemsprice * 0.15) // 15% tax
-  const totalPiece = round2(
-    itemsprice + (shippingPrice ? round2(shippingPrice) : 0) + taxPrice
+  const shippingPrice = itemsPrice > FREE_SHIPPING_MIN_PRICE ? 0 : 5
+  const taxPrice = round2(itemsPrice * 0.15) // 15% tax
+  const totalPrice = round2(
+    itemsPrice + (shippingPrice ? round2(shippingPrice) : 0) + taxPrice
   )
   return {
-    itemsprice,
+    itemsPrice,
     shippingPrice,
     taxPrice,
-    totalPiece,
+    totalPrice,
   }
 }

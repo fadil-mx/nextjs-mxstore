@@ -24,17 +24,18 @@ export const usecarteStore = create(
       cart: initialState,
       additems: async (item: orderItem, quantity: number) => {
         const { items } = get().cart
-        const existingItem = items.find((x) => {
-          x.product === item.product &&
+        const existingItem = items.find(
+          (x) =>
+            x.product === item.product &&
             x.size === item.size &&
             x.color === item.color
-        })
+        )
         if (existingItem) {
           if (existingItem.countInstock < quantity + existingItem.quantity) {
             throw new Error('Not enough stock')
           }
         } else {
-          if (item.countInstock < item.quantity) {
+          if (item.countInstock < quantity) {
             throw new Error('Not enough stock')
           }
         }
@@ -44,8 +45,8 @@ export const usecarteStore = create(
               x.size === item.size &&
               x.color === item.color
                 ? {
-                    ...existingItem,
-                    quantity: existingItem.quantity + quantity,
+                    ...x,
+                    quantity: x.quantity + quantity,
                   }
                 : x
             )
@@ -57,11 +58,16 @@ export const usecarteStore = create(
             ...(await calDeliveryDateAndPrice({ items: updateitems })),
           },
         })
-        return updateitems.find((x) => {
-          x.product === item.product &&
+        const foundItem = updateitems.find(
+          (x) =>
+            x.product === item.product &&
             x.size === item.size &&
             x.color === item.color
-        })?.clientId!
+        )
+        if (!foundItem) {
+          throw new Error('Item not found')
+        }
+        return foundItem.clientId
       },
       init: () => set({ cart: initialState }),
     }),

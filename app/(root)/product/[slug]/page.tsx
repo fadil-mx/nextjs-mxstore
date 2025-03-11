@@ -13,6 +13,7 @@ import ProductSlider from '@/components/shared/product/productSlider'
 import BrowsingHistory from '@/components/shared/BrowsingHistory'
 import Addtobrowsinghistory from '@/components/shared/product/Add-to-browsing-history'
 import Addtocart from '@/components/shared/product/Addtocart'
+import { generateId, round2 } from '@/lib/utils'
 
 export async function generateMetadata(props: {
   params: Promise<{
@@ -51,20 +52,6 @@ const ProductDetail = async ({
 
     page: Number(page),
   })
-
-  const testOrderItem = {
-    clientId: '12345',
-    product: 'abc123',
-    name: 'Sample Product',
-    slug: 'sample-product',
-    category: 'electronics',
-    quantity: 2,
-    countInstock: 35,
-    image: 'https://example.com/product-image.jpg',
-    price: 49.99,
-    size: 'M',
-    color: 'Red',
-  }
 
   // console.log(relatedProducts.data.length)
   return (
@@ -126,11 +113,30 @@ const ProductDetail = async ({
                 ) : (
                   <div className='text-destructive text-xl '> Out of Stock</div>
                 )}
-                <Addtocart item={testOrderItem} />
               </CardContent>
             </Card>
+            {product.countInStock !== 0 && (
+              <div className=''>
+                <Addtocart
+                  item={{
+                    clientId: generateId(),
+                    product: product._id,
+                    name: product.name,
+                    slug: product.slug,
+                    countInstock: product.countInStock,
+                    category: product.category,
+                    price: round2(product.price),
+                    quantity: 10,
+                    image: product.images[0],
+                    size: size || product.sizes[0],
+                    color: color || product.colors[0],
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
+        -
       </section>
 
       <section className='mt-10'>

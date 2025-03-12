@@ -124,7 +124,7 @@ const ProductDetail = async ({
                         countInstock: product.countInStock,
                         category: product.category,
                         price: round2(product.price),
-                        quantity: 10,
+                        quantity: 1,
                         image: product.images[0],
                         size: size || product.sizes[0],
                         color: color || product.colors[0],

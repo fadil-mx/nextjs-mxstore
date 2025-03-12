@@ -16,6 +16,8 @@ const initialState: cart = {
 type CartState = {
   cart: cart
   additems: (item: orderItem, quantity: number) => Promise<string>
+  updateItem: (item: orderItem, quantity: number) => void
+  removeItem: (item: orderItem) => void
 }
 
 export const usecarteStore = create(
@@ -68,6 +70,49 @@ export const usecarteStore = create(
           throw new Error('Item not found')
         }
         return foundItem.clientId
+      },
+      updateItem: async (item: orderItem, quantity: number) => {
+        const { items } = get().cart
+        const existingItem = items.find(
+          (x) =>
+            x.product === item.product &&
+            x.size === item.size &&
+            x.color === item.color
+        )
+        if (!existingItem) return
+        const updateitems = items.map((x) =>
+          x.product === item.product &&
+          x.size === item.size &&
+          x.color === item.color
+            ? {
+                ...x,
+                quantity: quantity,
+              }
+            : x
+        )
+        set({
+          cart: {
+            ...get().cart,
+            items: updateitems,
+            ...(await calDeliveryDateAndPrice({ items: updateitems })),
+          },
+        })
+      },
+      removeItem: async (item: orderItem) => {
+        const { items } = get().cart
+        const updateitems = items.filter(
+          (x) =>
+            x.product !== item.product ||
+            x.size !== item.size ||
+            x.color !== item.color
+        )
+        set({
+          cart: {
+            ...get().cart,
+            items: updateitems,
+            ...(await calDeliveryDateAndPrice({ items: updateitems })),
+          },
+        })
       },
       init: () => set({ cart: initialState }),
     }),

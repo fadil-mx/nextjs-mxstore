@@ -113,27 +113,27 @@ const ProductDetail = async ({
                 ) : (
                   <div className='text-destructive text-xl '> Out of Stock</div>
                 )}
+                {product.countInStock !== 0 && (
+                  <div className=''>
+                    <Addtocart
+                      item={{
+                        clientId: generateId(),
+                        product: product._id,
+                        name: product.name,
+                        slug: product.slug,
+                        countInstock: product.countInStock,
+                        category: product.category,
+                        price: round2(product.price),
+                        quantity: 10,
+                        image: product.images[0],
+                        size: size || product.sizes[0],
+                        color: color || product.colors[0],
+                      }}
+                    />
+                  </div>
+                )}
               </CardContent>
             </Card>
-            {product.countInStock !== 0 && (
-              <div className=''>
-                <Addtocart
-                  item={{
-                    clientId: generateId(),
-                    product: product._id,
-                    name: product.name,
-                    slug: product.slug,
-                    countInstock: product.countInStock,
-                    category: product.category,
-                    price: round2(product.price),
-                    quantity: 10,
-                    image: product.images[0],
-                    size: size || product.sizes[0],
-                    color: color || product.colors[0],
-                  }}
-                />
-              </div>
-            )}
           </div>
         </div>
         -

@@ -4,9 +4,10 @@ import React from 'react'
 import ImageHover from './ImageHover'
 import Image from 'next/image'
 import Rating from './rating'
-import { formatNumbers } from '@/lib/utils'
+import { formatNumbers, generateId, round2 } from '@/lib/utils'
 import ProductPrice from './product-price'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import Addtocart from './Addtocart'
 
 type Props = {
   product: IProduct
@@ -19,6 +20,7 @@ const Productcard = ({
   product,
   hideborder = false,
   hiddeDetails = false,
+  hideAddToCart = false,
 }: Props) => {
   const ProductImage = () => (
     <Link href={`/product/${product.slug}`}>
@@ -70,6 +72,26 @@ const Productcard = ({
       />
     </div>
   )
+  const AddButton = () => (
+    <div className='w-full text-center'>
+      <Addtocart
+        item={{
+          clientId: generateId(),
+          product: product._id,
+          name: product.name,
+          slug: product.slug,
+          countInstock: product.countInStock,
+          category: product.category,
+          price: round2(product.price),
+          quantity: 10,
+          image: product.images[0],
+          size: product.sizes[0],
+          color: product.colors[0],
+        }}
+      />
+    </div>
+  )
+
   return hideborder ? (
     <div className='flex flex-col'>
       <ProductImage />
@@ -78,6 +100,7 @@ const Productcard = ({
           <div className=' p-3 flex-1 text-center'>
             <ProductDetails />
           </div>
+          {!hideAddToCart && <AddButton />}
         </>
       )}
     </div>
@@ -91,6 +114,9 @@ const Productcard = ({
               <CardContent className='p-3 text-center flex-1'>
                 <ProductDetails />
               </CardContent>
+              <CardFooter className='p-3'>
+                {!hideAddToCart && <AddButton />}{' '}
+              </CardFooter>
             </>
           )}
         </CardHeader>

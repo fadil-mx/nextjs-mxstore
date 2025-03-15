@@ -1,7 +1,45 @@
-import { data, IProductInput } from '@/types'
+import { Data, IProductInput, userInput } from '@/types'
 import { toSlug } from './utils'
+import bcrypt from 'bcryptjs'
 
-const products: IProductInput = [
+const users: userInput[] = [
+  {
+    name: 'John',
+    email: 'admin@example.com',
+    password: bcrypt.hashSync('123456', 5),
+    role: 'Admin',
+    address: {
+      fullName: 'John Doe',
+      street: '111 Main St',
+      city: 'New York',
+      province: 'NY',
+      postalCode: '10001',
+      country: 'USA',
+      phone: '123-456-7890',
+    },
+    paymentMethod: 'Stripe',
+    emailVerified: false,
+  },
+  {
+    name: 'Jane',
+    email: 'jane@example.com',
+    password: bcrypt.hashSync('123456', 5),
+    role: 'User',
+    address: {
+      fullName: 'Jane Harris',
+      street: '222 Main St',
+      city: 'New York',
+      province: 'NY',
+      postalCode: '1002',
+      country: 'USA',
+      phone: '123-456-7890',
+    },
+    paymentMethod: 'Cash On Delivery',
+    emailVerified: false,
+  },
+]
+
+const products: IProductInput[] = [
   {
     name: 'Nike Mens Slim-fit Long-Sleeve T-Shirt',
     slug: toSlug('Nike Mens Slim-fit Long-Sleeve T-Shirt'),
@@ -707,7 +745,8 @@ const products: IProductInput = [
   },
 ]
 
-const data: data = {
+const data: Data = {
+  users,
   products,
   headerMenus: [
     {

@@ -74,3 +74,30 @@ export const Cartschema = z.object({
   deliveryDateIndex: z.number().optional(),
   expectedDeliverydate: z.optional(z.date()),
 })
+
+export const userInputSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'Name must be at least 2 characters long')
+    .max(50, 'Name must be at most 50 characters long'),
+  email: z.string().min(1, 'Invalid email address'),
+  password: z.string().min(3, 'Password must be at least 3 characters long'),
+  role: z.string().min(1, 'UserRole is required'),
+  image: z.string().optional(),
+  emailVerified: z.boolean().optional(),
+  paymentMethod: z.string().min(1, 'paymentethode is required'),
+  address: z.object({
+    fullName: z.string().min(1, 'fullName is required'),
+    street: z.string().min(1, 'street is required'),
+    city: z.string().min(1, 'city is required'),
+    postalCode: z.string().min(1, 'postalCode is required'),
+    province: z.string().min(1, 'province is required'),
+    country: z.string().min(1, 'country is required'),
+    phone: z.string().min(1, 'phone is required'),
+  }),
+})
+
+export const userSignInSchema = z.object({
+  email: z.string().min(1, 'Invalid email address'),
+  password: z.string().min(3, 'Password must be at least 3 characters long'),
+})

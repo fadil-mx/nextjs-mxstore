@@ -55,6 +55,7 @@ const Signupform = () => {
         toast.error(res.error)
         return
       }
+      toast.success(res.message)
       await signInWithCredentials({
         email: data.email,
         password: data.password,

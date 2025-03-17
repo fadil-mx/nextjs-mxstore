@@ -8,6 +8,7 @@ import SeparatorWithOr from '@/components/shared/separator-or'
 import { APP_NAME } from '@/lib/constants'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { GoogleSignInForm } from './GoogleSignin'
 
 export const metadata: Metadata = {
   title: 'Sign In',
@@ -31,7 +32,13 @@ const page = async ({ searchParams }: Props) => {
           <CardTitle className='text-2xl'>Sign In</CardTitle>
         </CardHeader>
         <CardContent>
-          <SignIn />
+          <div className=''>
+            <SignIn />
+          </div>
+          <SeparatorWithOr>Or</SeparatorWithOr>
+          <div className=''>
+            <GoogleSignInForm />
+          </div>
         </CardContent>
       </Card>
       <SeparatorWithOr> New to {APP_NAME}?</SeparatorWithOr>

@@ -150,7 +150,7 @@ const page = () => {
                       </span>
                       Choose this option at checkout.
                       <div className='  text-lg '>
-                        Subtotal (
+                        Subtotal ({' '}
                         {items.reduce((acc, item) => acc + item.quantity, 0)} ):
                         <span className=' font-bold'>
                           {' '}

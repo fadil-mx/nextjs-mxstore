@@ -52,7 +52,7 @@ const SignIn = () => {
         throw error
       }
       console.error(error)
-      toast.error('Invalid email or password')
+      toast.error((error as Error).message)
     }
   }
 

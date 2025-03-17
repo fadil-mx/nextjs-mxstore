@@ -14,13 +14,18 @@ export async function signInWithCredentials(user: userSignIn) {
   try {
     return await signIn('credentials', { ...user, redirect: false })
   } catch (error) {
-    throw error
+    console.log(error)
+    throw new Error('Invalid email or password')
   }
 }
 
 export async function SignOut() {
   const redirectTO = await authSignOut({ redirect: false })
   redirect(redirectTO.redirect)
+}
+
+export async function signInWithGoogle() {
+  await signIn('google')
 }
 
 export const registerUser = async (userSignUp: userSignUp) => {

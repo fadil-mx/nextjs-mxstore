@@ -1,6 +1,7 @@
 import { APP_COPYRIGHT } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Toaster } from '@/components/ui/sonner'
 
 export default function HomeLayout({
   children,
@@ -25,7 +26,9 @@ export default function HomeLayout({
         </Link>
       </header>
       <main className=' mx-auto max-w-sm min-w-80 p-6'>{children}</main>
-      <footer className=' mt-8 flex-1 flex flex-col gap-4 bg-gray-800 w-full p-8 items-center text-sm'>
+      <Toaster />
+
+      <footer className=' mt-8 flex-1 flex flex-col gap-4 bg-gray-800 w-full p-8  items-center text-sm'>
         <div className=' flex justify-center space-x-4 '>
           <Link href='/page/conditions-of-use' className=''>
             Conditions of Use

@@ -14,9 +14,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { SignOut } from '@/lib/actions/user.action'
 import { cn } from '@/lib/utils'
 
-type Props = {}
-
-const Userbutton = async (props: Props) => {
+const Userbutton = async () => {
   const session = await auth()
   return (
     <div className='flex gap-2 items-center'>

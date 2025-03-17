@@ -14,7 +14,6 @@ import { FREE_SHIPPING_MIN_PRICE } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 const page = () => {
   const {
@@ -22,7 +21,6 @@ const page = () => {
     updateItem,
     removeItem,
   } = usecarteStore()
-  const router = useRouter()
   return (
     <div>
       <div className='grid grid-cols-1 md:grid-cols-4 md:gap-4'>

@@ -98,6 +98,24 @@ export const userInputSchema = z.object({
 })
 
 export const userSignInSchema = z.object({
-  email: z.string().min(1, 'Invalid email address'),
-  password: z.string().min(3, 'Password must be at least 3 characters long'),
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Enter a valid email address'),
+  password: z.string().min(5, 'Password must be at least 5 characters long'),
 })
+
+export const userSignUpSchema = userSignInSchema
+  .extend({
+    name: z
+      .string()
+      .min(2, 'Name must be at least 2 characters long')
+      .max(50, 'Name must be at most 50 characters long'),
+    confirmPassword: z
+      .string()
+      .min(5, 'Password must be at least 5 characters long'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })

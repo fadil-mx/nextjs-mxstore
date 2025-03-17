@@ -85,16 +85,18 @@ body {
   .h2-bold {
     @apply font-bold text-lg lg:text-xl;
   }
+
+  .highlight-link a,
+  a.highlight-link {
+    @apply text-sky-700 hover:underline hover:text-orange-700;
+  }
+
 }
 
 
 
 @layer base {
 
-  .highlight-link a,
-  a.highlight-link {
-    @apply text-sky-700 hover:underline hover:text-orange-700;
-  }
 
   * {
     @apply border-border outline-ring/50;

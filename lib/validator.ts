@@ -96,7 +96,7 @@ export const userInputSchema = z.object({
   role: z.string().min(1, 'UserRole is required'),
   image: z.string().optional(),
   emailVerified: z.boolean().optional(),
-  paymentMethod: z.string().min(1, 'paymentethode is required'),
+  paymentMethode: z.string().min(1, 'paymentMethode is required'),
   address: z.object({
     fullName: z.string().min(1, 'fullName is required'),
     street: z.string().min(1, 'street is required'),
@@ -130,3 +130,40 @@ export const userSignUpSchema = userSignInSchema
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   })
+
+const MongoId = z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoId')
+
+export const orderInputSchema = z.object({
+  user: z.union([
+    MongoId,
+    z.object({
+      name: z.string(),
+      email: z.string().email(),
+    }),
+  ]),
+  items: z.array(OrderItemSchema).min(1, 'At least one item is required'),
+  shippingAddress: shippingAddressSchema,
+  paymentMethode: z.string().min(1, 'paymentmethode is required'),
+  paymentResult: z
+    .object({
+      id: z.string(),
+      status: z.string(),
+      email_address: z.string(),
+      pricePaid: z.string(),
+    })
+    .optional(),
+  itemsPrice: price('itemPrice'),
+  shippingPrice: price('shippigPrice'),
+  taxPrice: price('taxPrice'),
+  totalPrice: price('totalPrice'),
+  expectedDeliveryDate: z
+    .date()
+    .refine(
+      (date) => date > new Date(),
+      'Expected delivery date must be in the future'
+    ),
+  isDelivered: z.boolean().default(false),
+  deliveredAt: z.date().optional(),
+  isPaid: z.boolean().default(false),
+  paidAt: z.date().optional(),
+})

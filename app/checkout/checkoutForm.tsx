@@ -43,6 +43,9 @@ import {
 } from '@/lib/utils'
 import Image from 'next/image'
 import Checkoutfooter from './Checkout-footer'
+import { useRouter } from 'next/navigation'
+import { createOrder } from '@/lib/actions/order.action'
+import { toast } from 'sonner'
 
 const defultValue =
   process.env.NODE_ENV === 'development'
@@ -66,7 +69,7 @@ const defultValue =
       }
 
 const CheckoutForm = () => {
-  // const router = useRouter()
+  const router = useRouter()
   const [isAddressSlected, setIsAddressSlected] = useState(false)
   const [isPaymentMethodeSlected, setIsPaymentMethodeSlected] = useState(false)
   const [isDeliveryDateSlected, setIsDeliveryDateSlected] = useState(false)
@@ -87,6 +90,7 @@ const CheckoutForm = () => {
     setPaymentMethode,
     updateItem,
     removeItem,
+    clearCart,
   } = usecarteStore()
 
   const isMounted = useIsMounted()
@@ -100,18 +104,39 @@ const CheckoutForm = () => {
     setShippingAddress(values)
     setIsAddressSlected(true)
   }
-  // useEffect(() => {
-  //   if (!isMounted && !shippingAddress) return
-  //   shippingAddressForm.setValue('fullName', shippingAddress.fullName)
-  //   shippingAddressForm.setValue('street', shippingAddress.street)
-  //   shippingAddressForm.setValue('city', shippingAddress.city)
-  //   shippingAddressForm.setValue('province', shippingAddress.province)
-  //   shippingAddressForm.setValue('postalCode', shippingAddress.postalCode)
-  //   shippingAddressForm.setValue('country', shippingAddress.country)
-  //   shippingAddressForm.setValue('phone', shippingAddress.phone)
-  // }, [items, isMounted, router, shippingAddress, shippingAddressForm])
+  useEffect(() => {
+    if (!isMounted || !shippingAddress) return
+    shippingAddressForm.setValue('fullName', shippingAddress.fullName)
+    shippingAddressForm.setValue('street', shippingAddress.street)
+    shippingAddressForm.setValue('city', shippingAddress.city)
+    shippingAddressForm.setValue('province', shippingAddress.province)
+    shippingAddressForm.setValue('postalCode', shippingAddress.postalCode)
+    shippingAddressForm.setValue('country', shippingAddress.country)
+    shippingAddressForm.setValue('phone', shippingAddress.phone)
+  }, [items, isMounted, router, shippingAddress, shippingAddressForm])
 
-  const handlePlaceholder = async () => {}
+  const handlePlaceholder = async () => {
+    const res = await createOrder({
+      items,
+      expectedDeliverydate: calculateFutureDate(
+        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDeliver
+      ),
+      shippingAddress,
+      deliveryDateIndex,
+      paymentMethode,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    })
+    if (!res.sucess) {
+      toast.error(res.message)
+      return
+    }
+    toast.success(res.message)
+    clearCart()
+    router.push(`/checkout/${res.data?.orderId}`)
+  }
 
   const handleSelectedPaymentMethode = () => {
     setIsAddressSlected(true)

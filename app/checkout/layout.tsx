@@ -1,6 +1,7 @@
 import { HelpCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Toaster } from 'sonner'
 export default function HomeLayout({
   children,
 }: {
@@ -31,6 +32,7 @@ export default function HomeLayout({
           </div>
         </div>
       </header>
+      <Toaster />
       {children}
     </div>
   )

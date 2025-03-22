@@ -1,6 +1,4 @@
-import { Tomorrow } from 'next/font/google'
-
-export const APP_NAME = process.env.NEXT_APP_NAME || 'MXSTORE'
+export const APP_NAME = 'MXSTORE'
 export const APP_SLOGAN =
   process.env.NEXT_PUBLIC_APP_SLONGAN || 'Spend less, get more'
 export const APP_DESCRIPTION =

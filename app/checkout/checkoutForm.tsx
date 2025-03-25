@@ -116,26 +116,30 @@ const CheckoutForm = () => {
   }, [items, isMounted, router, shippingAddress, shippingAddressForm])
 
   const handlePlaceholder = async () => {
-    const res = await createOrder({
-      items,
-      expectedDeliverydate: calculateFutureDate(
-        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDeliver
-      ),
-      shippingAddress,
-      deliveryDateIndex,
-      paymentMethode,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    })
-    if (!res.sucess) {
-      toast.error(res.message)
-      return
+    try {
+      const res = await createOrder({
+        items,
+        expectedDeliverydate: calculateFutureDate(
+          AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDeliver
+        ),
+        shippingAddress,
+        deliveryDateIndex,
+        paymentMethode,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      })
+      if (!res.sucess) {
+        toast.error(res.message)
+        return
+      }
+      toast.success(res.message)
+      clearCart()
+      router.push(`/checkout/${res.data?.orderId}`)
+    } catch (error) {
+      toast.error(error.message)
     }
-    toast.success(res.message)
-    clearCart()
-    router.push(`/checkout/${res.data?.orderId}`)
   }
 
   const handleSelectedPaymentMethode = () => {

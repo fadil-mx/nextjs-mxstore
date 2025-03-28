@@ -91,6 +91,9 @@ body {
     @apply text-sky-700 hover:underline hover:text-orange-700;
   }
 
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
 }
 
 

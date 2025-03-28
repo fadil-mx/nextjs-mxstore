@@ -9,6 +9,21 @@ const price = (field: string) =>
       `${field} must have exactly two decimal places (e.g., 49.99)`
     )
 
+const MongoId = z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoId')
+
+export const ReviewInputSchema = z.object({
+  product: MongoId,
+  user: MongoId,
+  isVerifiedPurchase: z.boolean().optional(),
+  title: z.string().min(1, 'Title is required'),
+  comment: z.string().min(1, 'Comment is required'),
+  rating: z.coerce
+    .number()
+    .int()
+    .min(1, 'Rating must be at least 1')
+    .max(5, 'Rating must be at most 5'),
+})
+
 export const productInputSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters long'),
   slug: z.string().min(3, 'Slug must be at least 3 characters long'),
@@ -37,7 +52,7 @@ export const productInputSchema = z.object({
   ratingDistribution: z
     .array(z.object({ rating: z.number(), count: z.number() }))
     .max(5),
-  reviews: z.array(z.string()).default([]),
+  reviews: z.array(ReviewInputSchema).default([]),
   numSales: z.coerce
     .number()
     .int()
@@ -130,8 +145,6 @@ export const userSignUpSchema = userSignInSchema
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   })
-
-const MongoId = z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoId')
 
 export const orderInputSchema = z.object({
   user: z.union([

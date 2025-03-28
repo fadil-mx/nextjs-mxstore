@@ -7,12 +7,18 @@ import PurchaseReceiptEmail from './purchase-receipt'
 const resend = new Resend(process.env.RESEND_API_KEY as string)
 
 export const sendPurchaseReceipt = async ({ order }: { order: IOrder }) => {
-  await resend.emails.send({
-    from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
-    to: (order.user as { email: string }).email,
-    subject: `Order  Confirmation`,
-    react: <PurchaseReceiptEmail order={order} />,
-  })
+  try {
+    const response = await resend.emails.send({
+      from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+      // to: (order.user as { email: string }).email,
+      to: ['fadhilshareef369@gmail.com'],
+      subject: `Order Confirmation`,
+      react: <PurchaseReceiptEmail order={order} />,
+    })
+    console.log('Email sent successfully:', response)
+  } catch (error) {
+    console.error('Error sending email:', error)
+  }
 }
 
 // export const sendAskReviewOrderItems = async ({ order }: { order: IOrder }) => {

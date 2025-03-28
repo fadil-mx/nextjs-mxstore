@@ -14,6 +14,8 @@ import BrowsingHistory from '@/components/shared/BrowsingHistory'
 import Addtobrowsinghistory from '@/components/shared/product/Add-to-browsing-history'
 import Addtocart from '@/components/shared/product/Addtocart'
 import { generateId, round2 } from '@/lib/utils'
+import RatingSummary from '@/components/shared/product/rating-summary'
+import ReviewList from './review-list'
 
 export async function generateMetadata(props: {
   params: Promise<{
@@ -136,7 +138,13 @@ const ProductDetail = async ({
             </Card>
           </div>
         </div>
-        -
+        <RatingSummary
+          avgRating={product.avgRating}
+          numreviews={product.numReviews}
+          ratingDistribution={product.ratingDistribution}
+          // asPopover='true'
+        />
+        <ReviewList userId={undefined} product={product} />
       </section>
 
       <section className='mt-10'>

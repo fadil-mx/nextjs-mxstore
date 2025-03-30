@@ -16,6 +16,7 @@ import Addtocart from '@/components/shared/product/Addtocart'
 import { generateId, round2 } from '@/lib/utils'
 import RatingSummary from '@/components/shared/product/rating-summary'
 import ReviewList from './review-list'
+import { auth } from '@/auth'
 
 export async function generateMetadata(props: {
   params: Promise<{
@@ -54,7 +55,7 @@ const ProductDetail = async ({
 
     page: Number(page),
   })
-
+  const session = await auth()
   // console.log(relatedProducts.data.length)
   return (
     <div>
@@ -72,9 +73,15 @@ const ProductDetail = async ({
               </p>
               <h1 className='font-bold text-lg lg:text-xl'>{product.name}</h1>
               <div className='flex items-center gap-2'>
-                <span>{product.avgRating.toFixed(1)}</span>
-                <Rating rating={product.avgRating} />
-                <span className=''>{product.numReviews} rating</span>
+                {/* <span>{product.avgRating.toFixed(1)}</span> */}
+                {/* <Rating rating={product.avgRating} /> */}
+                <RatingSummary
+                  avgRating={product.avgRating}
+                  numreviews={product.numReviews}
+                  ratingDistribution={product.ratingDistribution}
+                  asPopover={true}
+                />
+                {/* <span className=''>{product.numReviews} rating</span> */}
               </div>
               <Separator />
               <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
@@ -138,13 +145,9 @@ const ProductDetail = async ({
             </Card>
           </div>
         </div>
-        <RatingSummary
-          avgRating={product.avgRating}
-          numreviews={product.numReviews}
-          ratingDistribution={product.ratingDistribution}
-          // asPopover='true'
-        />
-        <ReviewList userId={undefined} product={product} />
+        <section className='mt-14'>
+          <ReviewList userId={session?.user.id} product={product} />
+        </section>
       </section>
 
       <section className='mt-10'>

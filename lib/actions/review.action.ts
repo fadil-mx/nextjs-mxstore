@@ -9,6 +9,7 @@ import { formatError } from '../utils'
 import mongoose from 'mongoose'
 import product from '../db/models/productmodel'
 import { PAGE_SIZE } from '../constants'
+import { revalidatePath } from 'next/cache'
 
 export async function createUpdatedReview({
   data,

@@ -1,15 +1,18 @@
 import React from 'react'
 import Rating from './rating'
 import { Progress } from '@/components/ui/progress'
-import { Popover, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
-import { PopoverContent } from '@radix-ui/react-popover'
 import { Separator } from '@radix-ui/react-select'
 import Link from 'next/link'
 
 type Props = {
-  asPopover?: string
+  asPopover?: boolean
   avgRating: number
   numreviews: number
   ratingDistribution: {
@@ -31,7 +34,7 @@ const RatingSummary = ({
     }))
     return (
       <>
-        <div className=' flex  flex-wrap items-center gap-2 cursor-help'>
+        <div className=' flex   flex-wrap items-center gap-2 cursor-help'>
           <Rating rating={avgRating} />
           <span className=''>{avgRating.toFixed(1)} out of 5</span>
         </div>
@@ -60,7 +63,7 @@ const RatingSummary = ({
             <ChevronDown className='w-5 h-5 text-muted-foreground' />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className=' w-auto p-4' align='end'>
+        <PopoverContent className='  w-auto p-4' align='end'>
           <div className='flex flex-col gap-2'>
             <Ratingdistribution />
             <Separator />

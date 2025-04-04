@@ -1,7 +1,7 @@
 'use server'
 import { cart, orderItem, shippingAddress } from '@/types'
 import { formatError, round2 } from '../utils'
-import { AVAILABLE_DELIVERY_DATES } from '../constants'
+import { AVAILABLE_DELIVERY_DATES, PAGE_SIZE } from '../constants'
 import { connectDB } from '../db'
 import { auth } from '@/auth'
 import { orderInputSchema } from '../validator'
@@ -181,5 +181,36 @@ export const calDeliveryDateAndPrice = async ({
     shippingPrice,
     taxPrice,
     totalPrice,
+  }
+}
+
+//getting users orders
+
+export async function getOrders({
+  limit,
+  page = 1,
+}: {
+  limit?: number
+  page: number
+}) {
+  limit = limit || PAGE_SIZE
+  const skip = (page - 1) * limit
+  try {
+    const session = await auth()
+    if (!session) {
+      throw new Error('Unauthorized')
+    }
+    await connectDB()
+    const orders = await Order.find({ user: session.user.id })
+      .sort({ createdAt: 'desc' })
+      .skip(skip)
+      .limit(limit)
+    const totalOrders = await Order.countDocuments({ user: session.user.id })
+    return {
+      data: JSON.parse(JSON.stringify(orders)) as IOrder[],
+      totalPages: Math.ceil(totalOrders / limit), // if totalOrders is 0, return 1
+    }
+  } catch (error) {
+    throw new Error(formatError(error))
   }
 }

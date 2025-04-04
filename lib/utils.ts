@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import qs from 'query-string'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -135,4 +136,18 @@ export const formatDateTime = (dateString: Date) => {
 
 export function formatId(id: string) {
   return ` ..${id.substring(id.length - 6)}`
+}
+
+export function formUrlQuery({
+  params,
+  key,
+  value,
+}: {
+  params: string
+  key: string
+  value: string | null
+}) {
+  const currenturl = qs.parse(params)
+  currenturl[key] = value
+  return `${window.location.pathname}?${qs.stringify(currenturl, { skipNull: true })}`
 }

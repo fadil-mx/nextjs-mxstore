@@ -6,6 +6,7 @@ import Menu from './menu'
 import { Button } from '@/components/ui/button'
 import { MenuIcon } from 'lucide-react'
 import data from '@/lib/data'
+import Sidebar from './sidebar'
 
 const Header = () => {
   return (
@@ -32,13 +33,14 @@ const Header = () => {
         </div>
       </div>
       <div className='flex items-center px-3 mb-1 bg-gray-800 min-h-10 '>
-        <Button
+        {/* <Button
           variant='ghost'
           className=' dark  header-button flex flex-wrap gap-3 overflow-hidden max-h-[142px]'
         >
           <MenuIcon />
           ALL
-        </Button>
+        </Button> */}
+        <Sidebar categories={['assas', 'aass']} />
         <div className='ml-5 flex items-center  gap-4 flex-wrap  max-h-[142px]'>
           {data.headerMenus.map((item) => (
             <Link

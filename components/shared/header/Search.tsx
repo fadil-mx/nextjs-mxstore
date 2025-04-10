@@ -10,9 +10,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { APP_NAME } from '@/lib/constants'
 import { SearchIcon } from 'lucide-react'
+import { getAllCategories } from '@/lib/actions/product.action'
 
-const categories = ['men', 'women', 'kids', 'accessories']
-const Search = () => {
+const Search = async () => {
+  const categories = await getAllCategories()
   return (
     <form action='/search' method='get' className='flex items-stretch h-10 '>
       <Select name='catagory'>

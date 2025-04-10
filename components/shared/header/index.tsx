@@ -3,12 +3,13 @@ import Link from 'next/link'
 import React from 'react'
 import Search from './Search'
 import Menu from './menu'
-import { Button } from '@/components/ui/button'
-import { MenuIcon } from 'lucide-react'
+
 import data from '@/lib/data'
 import Sidebar from './sidebar'
+import { getAllCategories } from '@/lib/actions/product.action'
 
-const Header = () => {
+const Header = async () => {
+  const categorie = await getAllCategories()
   return (
     <header className='bg-black text-white '>
       <div className='px-4'>
@@ -40,7 +41,7 @@ const Header = () => {
           <MenuIcon />
           ALL
         </Button> */}
-        <Sidebar categories={['assas', 'aass']} />
+        <Sidebar categories={categorie} />
         <div className='ml-5 flex items-center  gap-4 flex-wrap  max-h-[142px]'>
           {data.headerMenus.map((item) => (
             <Link

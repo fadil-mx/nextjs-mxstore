@@ -263,7 +263,7 @@ export async function getOrderSummery(date: DateRange) {
       },
     ])
     const totalSales = totalSalesresult[0] ? totalSalesresult[0].totalSales : 0
-    const date = new Date()
+    // const currentDate = new Date()
 
     const sixMonthsEarlier = new Date()
     sixMonthsEarlier.setMonth(sixMonthsEarlier.getMonth() - 6)
@@ -273,12 +273,13 @@ export async function getOrderSummery(date: DateRange) {
         $match: {
           createdAt: {
             $gte: sixMonthsEarlier,
+            $ne: null,
           },
         },
       },
       {
         $group: {
-          _id: { format: '%Y-%m', date: '$createdAt' },
+          _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
           totalSales: { $sum: '$totalPrice' },
         },
       },
@@ -286,7 +287,7 @@ export async function getOrderSummery(date: DateRange) {
         $project: {
           _id: 0,
           label: '$_id',
-          values: '$totalSales',
+          value: '$totalSales',
         },
       },
       {
@@ -318,7 +319,7 @@ export async function getOrderSummery(date: DateRange) {
   }
 }
 
-async function getSalesChartData(date: Date) {
+async function getSalesChartData(date: DateRange) {
   const result = await Order.aggregate([
     {
       $match: {

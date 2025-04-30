@@ -5,7 +5,7 @@ import React from 'react'
 import CartButton from './CartButton'
 import Userbutton from './User-button'
 
-const Menu = () => {
+const Menu = ({ forAdmin = false }: { forAdmin?: boolean }) => {
   return (
     <div className='flex justify-end py-3'>
       <nav className='flex gap-3 w-full items-center'>
@@ -14,7 +14,7 @@ const Menu = () => {
           <span className='font-medium'>Sign in</span>
         </Link> */}
         <Userbutton />
-        <CartButton />
+        {forAdmin ? null : <CartButton />}
       </nav>
     </div>
   )

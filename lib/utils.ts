@@ -74,7 +74,7 @@ export function getMonthName(yearMonth: string): string {
   const now = new Date()
 
   if (year === now.getFullYear() && month === now.getMonth() + 1) {
-    return `${monthName} Ongoing`
+    return `${monthName} (Ongoing)`
   }
   return monthName
 }

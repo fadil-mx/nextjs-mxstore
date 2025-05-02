@@ -441,3 +441,99 @@ async function getTopSalesCategories(date: DateRange, limit = 5) {
 
   return result
 }
+
+//admin order
+export async function getOrdersAdmin({
+  limit,
+  page = 1,
+}: {
+  limit?: number
+  page: number
+}) {
+  limit = limit || PAGE_SIZE
+  const skip = (page - 1) * limit
+  try {
+    await connectDB()
+    const orders = await Order.find()
+      .populate('user', 'name email')
+      .sort({ createdAt: 'desc' })
+      .skip(skip)
+      .limit(limit)
+    const totalOrders = await Order.countDocuments()
+    return {
+      data: JSON.parse(JSON.stringify(orders)) as IOrder[],
+      totalPages: Math.ceil(totalOrders / limit),
+    }
+  } catch (error) {
+    throw new Error(formatError(error))
+  }
+}
+
+export async function deleteOrderById(orderId: string) {
+  try {
+    await connectDB()
+    const order = await Order.findByIdAndDelete(orderId)
+    if (!order) {
+      throw new Error('Order not found')
+    }
+    return {
+      success: true,
+      message: 'Order deleted successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
+
+export async function updateOrderToPaid(orderId: string) {
+  try {
+    await connectDB()
+    const order = await Order.findById(orderId)
+    if (!order) {
+      throw new Error('Order not found')
+    }
+    if (order.isPaid) {
+      throw new Error('Order already paid')
+    }
+    order.isPaid = true
+    order.paidAt = new Date()
+    await order.save()
+    return {
+      success: true,
+      message: 'Order updated to paid successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
+
+export async function deliverOrder(orderId: string) {
+  try {
+    await connectDB()
+    const order = await Order.findById(orderId)
+    if (!order) {
+      throw new Error('Order not found')
+    }
+    if (order.isDelivered) {
+      throw new Error('Order already delivered')
+    }
+    order.isDelivered = true
+    order.deliveredAt = new Date()
+    await order.save()
+    return {
+      success: true,
+      message: 'Order updated to delivered successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}

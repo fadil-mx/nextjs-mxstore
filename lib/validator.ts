@@ -187,3 +187,13 @@ export const UserNameSchema = z.object({
     .min(2, 'Name must be at least 2 characters long')
     .max(50, 'Name must be at most 50 characters long'),
 })
+
+export const UpdateUser = z.object({
+  id: MongoId,
+  name: z
+    .string()
+    .min(2, 'Name must be at least 2 characters long')
+    .max(50, 'Name must be at most 50 characters long'),
+  role: z.string().min(1, 'UserRole is required'),
+  email: z.string().min(1, 'Invalid email address').optional(),
+})

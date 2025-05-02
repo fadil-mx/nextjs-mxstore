@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Adminnav from './admin-nav'
 import Menu from '@/components/shared/header/menu'
+import { Toaster } from '@/components/ui/sonner'
 
 export default async function AdminLayout({
   children,
@@ -28,6 +29,7 @@ export default async function AdminLayout({
           </div>
         </div>
         <div className='flex-1 p-4'>{children}</div>
+        <Toaster />
       </div>
     </div>
   )

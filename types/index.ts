@@ -5,6 +5,7 @@ import {
   productInputSchema,
   ReviewInputSchema,
   shippingAddressSchema,
+  UpdateUser,
   userInputSchema,
   UserNameSchema,
   userSignInSchema,
@@ -30,6 +31,7 @@ export type IorderList = orderInput & {
 }
 export type ReviewInput = z.infer<typeof ReviewInputSchema>
 export type IUserName = z.infer<typeof UserNameSchema>
+export type Updateuser = z.infer<typeof UpdateUser>
 export type ReviewInputType = z.infer<typeof ReviewInputSchema>
 export type ReviewDetails = ReviewInput & {
   _id: string

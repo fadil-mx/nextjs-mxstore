@@ -27,17 +27,18 @@ const page = async ({ params }: Props) => {
   }
   const session = await auth()
   return (
-    <div>
+    <div className='max-w-5xl mx-auto'>
       <div className='flex gap-2'>
-        <Link href='/account'>Your Account</Link>
-        <span>{'>'}</span>
-        <Link href='/account/orders'>Your Orders</Link>
+        <Link href='/admin/orders'> Orders</Link>
         <span>{'>'}</span>
 
-        <span> Order {formatId(order._id)}</span>
+        <span> {formatId(order._id)}</span>
       </div>
       <h1 className='h1-bold py-4'> Order {formatId(order._id)}</h1>
-      <OrderDetailsForm order={order} isAdmin={true} />
+      <OrderDetailsForm
+        order={order}
+        isAdmin={session?.user?.role === 'Admin' || false}
+      />
     </div>
   )
 }

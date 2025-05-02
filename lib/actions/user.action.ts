@@ -2,13 +2,14 @@
 
 // import { signIn, signOut } from '@/auth'
 import { signIn, signOut as authSignOut, auth } from '@/auth'
-import { IUserName, userSignIn, userSignUp } from '@/types'
+import { IUserName, Updateuser, userSignIn, userSignUp } from '@/types'
 import { redirect } from 'next/navigation'
-import { userSignUpSchema } from '../validator'
+import { UpdateUser, userSignUpSchema } from '../validator'
 import { connectDB } from '../db'
 import User from '../db/models/user.model'
 import bcrypt from 'bcryptjs'
 import { formatError } from '../utils'
+import { PAGE_SIZE } from '../constants'
 
 export async function signInWithCredentials(user: userSignIn) {
   try {
@@ -64,5 +65,83 @@ export async function updateUser(username: IUserName) {
     }
   } catch (error) {
     return { error: formatError(error), success: false }
+  }
+}
+
+//admin actions
+
+export async function allUsers({
+  page = 1,
+  limit,
+}: {
+  page: number
+  limit?: number
+}) {
+  limit = limit || PAGE_SIZE
+  const skip = (page - 1) * limit
+  try {
+    await connectDB()
+    const users = await User.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+    const total = await User.countDocuments()
+    return {
+      message: 'Users fetched successfully',
+      success: true,
+      data: JSON.parse(JSON.stringify(users)),
+      total: Math.ceil(total / limit),
+    }
+  } catch (error) {
+    return { error: formatError(error), success: false }
+  }
+}
+
+export async function getUserById(id: string) {
+  try {
+    await connectDB()
+    const user = await User.findById(id)
+    if (!user) throw new Error('User not found')
+    return {
+      message: 'User fetched successfully',
+      success: true,
+      data: JSON.parse(JSON.stringify(user)),
+    }
+  } catch (error) {
+    return { error: formatError(error), success: false }
+  }
+}
+
+export async function updateUserById(data: Updateuser) {
+  try {
+    await connectDB()
+    const parsedata = await UpdateUser.parseAsync(data)
+    const user = await User.findById(parsedata.id)
+    if (!user) throw new Error('User not found')
+    user.name = parsedata.name
+    user.email = parsedata.email
+    user.role = parsedata.role
+    await user.save()
+    return {
+      message: 'User updated successfully',
+      success: true,
+    }
+  } catch (error) {
+    return { error: formatError(error), success: false }
+  }
+}
+
+export async function deleteUserById(id: string) {
+  try {
+    await connectDB()
+    const user = await User.findById(id)
+    if (!user) throw new Error('User not found')
+    await User.findByIdAndDelete(id)
+    return {
+      message: 'User deleted successfully',
+      success: true,
+    }
+  } catch (error) {
+    return { message: formatError(error), success: false }
   }
 }

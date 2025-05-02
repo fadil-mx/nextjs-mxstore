@@ -27,7 +27,9 @@ export default function ErrorPage({
         <Button
           variant='outline'
           className='mt-4 ml-2'
-          onClick={() => (window.location.href = '/')}
+          onClick={() => {
+            window.location.href = '/'
+          }}
         >
           Back To Home
         </Button>

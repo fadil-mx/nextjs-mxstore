@@ -17,8 +17,8 @@ import { IOrder } from '@/lib/db/models/order.model'
 import { cn, formatDateTime } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import ProductPrice from '../product/product-price'
-// import ActionButton from '../action-button'
-// import { deliverOrder, updateOrderToPaid } from '@/lib/actions/order.actions'
+import ActionButton from './ActionButton'
+import { deliverOrder, updateOrderToPaid } from '@/lib/actions/order.action'
 
 export default function OrderDetailsForm({
   order,
@@ -167,7 +167,7 @@ export default function OrderDetailsForm({
               </Link>
             )}
 
-            {/* {isAdmin && !isPaid && paymentMethode === 'Cash On Delivery' && (
+            {isAdmin && !isPaid && paymentMethode === 'Cash on delivery' && (
               <ActionButton
                 caption='Mark as paid'
                 action={() => updateOrderToPaid(order._id)}
@@ -178,7 +178,7 @@ export default function OrderDetailsForm({
                 caption='Mark as delivered'
                 action={() => deliverOrder(order._id)}
               />
-            )} */}
+            )}
           </CardContent>
         </Card>
       </div>

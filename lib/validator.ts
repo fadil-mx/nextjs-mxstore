@@ -59,6 +59,10 @@ export const productInputSchema = z.object({
     .nonnegative('Number of sales must be a non-negative number'),
 })
 
+export const productUpdateSchema = productInputSchema.extend({
+  _id: MongoId,
+})
+
 export const OrderItemSchema = z.object({
   clientId: z.string().min(1, 'clientId is required'),
   product: z.string().min(1, 'product is required'),

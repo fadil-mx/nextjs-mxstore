@@ -3,6 +3,7 @@ import {
   orderInputSchema,
   OrderItemSchema,
   productInputSchema,
+  productUpdateSchema,
   ReviewInputSchema,
   shippingAddressSchema,
   UpdateUser,
@@ -14,6 +15,7 @@ import {
 import { z } from 'zod'
 
 export type IProductInput = z.infer<typeof productInputSchema>
+export type IProductUpdate = z.infer<typeof productUpdateSchema>
 export type orderItem = z.infer<typeof OrderItemSchema>
 export type cart = z.infer<typeof Cartschema>
 export type userInput = z.infer<typeof userInputSchema>

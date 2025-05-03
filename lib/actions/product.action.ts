@@ -3,6 +3,7 @@
 import { PAGE_SIZE } from '../constants'
 import { connectDB } from '../db'
 import product, { IProduct } from '../db/models/productmodel'
+import { formatError } from '../utils'
 
 export async function getAllCategories() {
   await connectDB()
@@ -208,4 +209,23 @@ export async function getAllTags() {
           .join(' ')
       ) as string[]) || []
   )
+}
+
+//admin
+export async function getProductById(id: string) {
+  try {
+    await connectDB()
+    const productDetails = await product.findById(id)
+    if (!productDetails) throw new Error('Product not found')
+    return {
+      product: JSON.parse(JSON.stringify(productDetails)) as IProduct,
+      success: true,
+      message: 'Product found',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
 }

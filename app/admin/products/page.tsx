@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Metadata } from 'next'
 import React from 'react'
 import {
@@ -9,13 +9,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { getAllProducts } from '@/lib/actions/product.action'
+import { deleteProduct, getAllProducts } from '@/lib/actions/product.action'
 import { IProduct } from '@/lib/db/models/productmodel'
 import Link from 'next/link'
 import { cn, formatDateTime, formatId } from '@/lib/utils'
 import ProductPrice from '@/components/shared/product/product-price'
 import Pagination from '@/components/shared/pagination'
 import Adminsearch from '@/components/shared/product/adimProduct/Adminsearch'
+import Deleteuser from '@/components/shared/Delete-user'
 
 export const metadata: Metadata = {
   title: 'Admin-Products',
@@ -89,7 +90,7 @@ const page = async ({
                   {value.avgRating > 0 ? (
                     <span className='text-green-500'>{value.avgRating}</span>
                   ) : (
-                    <span className='text-red-500'>No rating</span>
+                    <span className='text-red-500'>0</span>
                   )}
                 </TableCell>
                 <TableCell>
@@ -109,8 +110,11 @@ const page = async ({
                   >
                     Edit
                   </Link>
-                  <Button variant={'outline'}>View</Button>
-                  <Button variant={'outline'}>Delete</Button>
+                  <Deleteuser
+                    id={value._id}
+                    deleteAction={deleteProduct}
+                    textname='the product'
+                  />
                 </TableCell>
               </TableRow>
             ))}

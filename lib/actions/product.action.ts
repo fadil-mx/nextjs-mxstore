@@ -3,7 +3,8 @@
 import { PAGE_SIZE } from '../constants'
 import { connectDB } from '../db'
 import product, { IProduct } from '../db/models/productmodel'
-import { formatError } from '../utils'
+import { formatError, toSlug } from '../utils'
+import { productInputSchema } from '../validator'
 
 export async function getAllCategories() {
   await connectDB()
@@ -221,6 +222,63 @@ export async function getProductById(id: string) {
       product: JSON.parse(JSON.stringify(productDetails)) as IProduct,
       success: true,
       message: 'Product found',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
+
+export async function createProduct(data: IProduct) {
+  try {
+    await connectDB()
+    const parsedProduct = await productInputSchema.parseAsync(data)
+    await product.create({
+      ...parsedProduct,
+      slug: toSlug(parsedProduct.slug),
+    })
+    return {
+      success: true,
+      message: 'Product created successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
+
+export async function updateProduct(id: string, data: IProduct) {
+  try {
+    await connectDB()
+    const parsedProduct = await productInputSchema.parseAsync(data)
+    const existingProduct = await product.findById(id)
+    if (!existingProduct) throw new Error('Product not found')
+    await product.findByIdAndUpdate(id, parsedProduct)
+    return {
+      success: true,
+      message: 'Product updated successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
+
+export async function deleteProduct(id: string) {
+  try {
+    await connectDB()
+    const existingProduct = await product.findById(id)
+    if (!existingProduct) throw new Error('Product not found')
+    await product.findByIdAndDelete(id)
+    return {
+      success: true,
+      message: 'Product deleted successfully',
     }
   } catch (error) {
     return {

@@ -29,10 +29,7 @@ const Adminnav = ({
       title: 'Settings',
       href: '/admin/settings',
     },
-    {
-      title: 'Pages',
-      href: '/admin/web-pages',
-    },
+
     {
       title: 'Carousel',
       href: '/admin/carousels',

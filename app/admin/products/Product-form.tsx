@@ -1,6 +1,6 @@
 'use client'
 import { IProduct } from '@/lib/db/models/productmodel'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
@@ -24,8 +24,13 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { IProductInput } from '@/types'
-import { productInputSchema, productUpdateSchema } from '@/lib/validator'
-import { getAllCategories } from '@/lib/actions/product.action'
+import { productInputSchema } from '@/lib/validator'
+import { UploadButton } from '@/lib/uploadthing'
+import { Card, CardContent } from '@/components/ui/card'
+import Image from 'next/image'
+import { createProduct } from '@/lib/actions/product.action'
+import { formatError } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   type: 'create' | 'update'
@@ -38,7 +43,7 @@ const productDefaultValues: IProductInput =
     ? {
         name: 'Sample Product',
         slug: 'sample-product',
-        category: 'Sample Category',
+        category: 'Shoes',
         images: ['/images/p11-1.jpg'],
         brand: 'Sample Brand',
         description: 'This is a sample description of the product.',
@@ -77,6 +82,7 @@ const productDefaultValues: IProductInput =
       }
 
 const Productform = ({ type, product, productId }: Props) => {
+  const router = useRouter()
   const form = useForm<IProductInput>({
     resolver: zodResolver(productInputSchema),
     defaultValues: type === 'update' ? product : productDefaultValues,
@@ -109,8 +115,20 @@ const Productform = ({ type, product, productId }: Props) => {
   })
 
   const onSubmit = async (values: IProductInput) => {
-    console.log('values are', values)
+    if (type === 'create') {
+      try {
+        const res = await createProduct(values)
+        if (!res.success) {
+          toast.error(res.message)
+        }
+        toast.success(res.message)
+        router.push('/admin/products')
+      } catch (error) {
+        toast.error(formatError(error))
+      }
+    }
   }
+  const images = form.watch('images')
 
   return (
     <div>
@@ -159,7 +177,7 @@ const Productform = ({ type, product, productId }: Props) => {
                     >
                       <FormControl>
                         <SelectTrigger className=''>
-                          <SelectValue placeholder='Select category' />
+                          <SelectValue>{field.value}</SelectValue>
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -231,7 +249,50 @@ const Productform = ({ type, product, productId }: Props) => {
               )}
             />
           </div>
-          <h1>Image</h1>
+
+          <div className='flex flex-col gap-5 md:flex-row'>
+            <FormField
+              control={form.control}
+              name='images'
+              render={() => (
+                <FormItem className='w-full'>
+                  <FormLabel>Images</FormLabel>
+                  <Card>
+                    <CardContent className='space-y-2 mt-2 min-h-48'>
+                      <div className='flex justify-start items-center space-x-2'>
+                        {images.map((image: string) => (
+                          <Image
+                            key={image}
+                            src={image}
+                            alt='product image'
+                            className='w-20 h-20 object-cover object-center rounded-sm'
+                            width={100}
+                            height={100}
+                          />
+                        ))}
+                        <FormControl>
+                          <UploadButton
+                            endpoint='imageUploader'
+                            onClientUploadComplete={(
+                              res: { url: string }[]
+                            ) => {
+                              form.setValue('images', [...images, res[0].url])
+                            }}
+                            onUploadError={(error: Error) => {
+                              toast.error(`ERROR! ${error.message}`)
+                            }}
+                          />
+                        </FormControl>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name='description'

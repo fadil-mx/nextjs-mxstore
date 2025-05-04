@@ -60,7 +60,7 @@ export const productInputSchema = z.object({
 })
 
 export const productUpdateSchema = productInputSchema.extend({
-  _id: MongoId,
+  _id: z.string(),
 })
 
 export const OrderItemSchema = z.object({
@@ -200,4 +200,12 @@ export const UpdateUser = z.object({
     .max(50, 'Name must be at most 50 characters long'),
   role: z.string().min(1, 'UserRole is required'),
   email: z.string().min(1, 'Invalid email address').optional(),
+})
+
+export const carouselsSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  buttonCaption: z.string().min(1, 'Button caption is required'),
+  url: z.string().min(1, 'Url is required'),
+  image: z.string().min(1, 'Image is required'),
+  isPublished: z.boolean(),
 })

@@ -3,6 +3,7 @@ import Carouselhome from '@/components/shared/home/Carousel'
 import Homecard from '@/components/shared/home/Homecard'
 import ProductSlider from '@/components/shared/product/productSlider'
 import { Card, CardContent } from '@/components/ui/card'
+import { getCarousels } from '@/lib/actions/carousel.action'
 import {
   getAllCategories,
   getProductByTag,
@@ -23,6 +24,7 @@ export default async function Home() {
   // console.log(featureds)
   const bestseller = await getProductsForCard({ tag: 'best-seller', limit: 4 })
   // console.log(bestseller)
+  const c = await getCarousels()
   const cards = [
     {
       title: 'Categories To Explore',
@@ -67,7 +69,7 @@ export default async function Home() {
   // console.log(todayDeal)
   return (
     <div className=''>
-      <Carouselhome items={data.carousels} />
+      <Carouselhome items={c.data} />
       <div className='md:p-4 md:space-y-4 bg-border'>
         <Homecard cards={cards} />
 

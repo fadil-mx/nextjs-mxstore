@@ -1,6 +1,6 @@
 'use client'
 import { IProduct } from '@/lib/db/models/productmodel'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
@@ -28,7 +28,7 @@ import { productInputSchema } from '@/lib/validator'
 import { UploadButton } from '@/lib/uploadthing'
 import { Card, CardContent } from '@/components/ui/card'
 import Image from 'next/image'
-import { createProduct } from '@/lib/actions/product.action'
+import { createProduct, updateProduct } from '@/lib/actions/product.action'
 import { formatError } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
@@ -83,6 +83,7 @@ const productDefaultValues: IProductInput =
 
 const Productform = ({ type, product, productId }: Props) => {
   const router = useRouter()
+
   const form = useForm<IProductInput>({
     resolver: zodResolver(productInputSchema),
     defaultValues: type === 'update' ? product : productDefaultValues,
@@ -104,7 +105,6 @@ const Productform = ({ type, product, productId }: Props) => {
     control: form.control,
     name: 'colors',
   })
-
   const {
     fields: tagFields,
     append: appendTag,
@@ -115,7 +115,18 @@ const Productform = ({ type, product, productId }: Props) => {
   })
 
   const onSubmit = async (values: IProductInput) => {
-    if (type === 'create') {
+    if (type === 'update') {
+      try {
+        const res = await updateProduct(productId, values)
+        if (!res.success) {
+          toast.error(res.message)
+        }
+        toast.success(res.message)
+        router.push('/admin/products')
+      } catch (error) {
+        toast.error(formatError(error))
+      }
+    } else if (type === 'create') {
       try {
         const res = await createProduct(values)
         if (!res.success) {

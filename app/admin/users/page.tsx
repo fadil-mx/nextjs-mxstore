@@ -1,10 +1,5 @@
 import React from 'react'
 
-export const metadata: Metadata = {
-  title: 'Users',
-  description: 'Users page',
-}
-
 import {
   Table,
   TableBody,
@@ -21,6 +16,11 @@ import Pagination from '@/components/shared/pagination'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import Deleteuser from '@/components/shared/Delete-user'
+
+export const metadata: Metadata = {
+  title: 'Users',
+  description: 'Users page',
+}
 
 const page = async ({
   searchParams,

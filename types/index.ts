@@ -1,4 +1,5 @@
 import {
+  carouselsSchema,
   Cartschema,
   orderInputSchema,
   OrderItemSchema,
@@ -35,6 +36,7 @@ export type ReviewInput = z.infer<typeof ReviewInputSchema>
 export type IUserName = z.infer<typeof UserNameSchema>
 export type Updateuser = z.infer<typeof UpdateUser>
 export type ReviewInputType = z.infer<typeof ReviewInputSchema>
+export type Carousel = z.infer<typeof carouselsSchema>
 export type ReviewDetails = ReviewInput & {
   _id: string
   createdAt: string

@@ -3,6 +3,7 @@ import OrderDetailsForm from '@/components/shared/order/order-details-form'
 import { getOrderById } from '@/lib/actions/order.action'
 import { formatId } from '@/lib/utils'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
 export async function generateMetadata(props: {
@@ -26,6 +27,10 @@ const page = async ({ params }: Props) => {
     return <div>Order Not Found</div>
   }
   const session = await auth()
+  if (!session) {
+    redirect('/login?callbackUrl=/account/orders')
+  }
+
   return (
     <div>
       <div className='flex gap-2'>

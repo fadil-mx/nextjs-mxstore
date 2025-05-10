@@ -9,7 +9,6 @@ import {
   getProductByTag,
   getProductsForCard,
 } from '@/lib/actions/product.action'
-import data from '@/lib/data'
 import { toSlug } from '@/lib/utils'
 
 export default async function Home() {

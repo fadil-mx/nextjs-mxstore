@@ -4,7 +4,6 @@ import {
   getRelatedProductsByCategory,
 } from '@/lib/actions/product.action'
 import React from 'react'
-import Rating from '@/components/shared/product/rating'
 import { Separator } from '@/components/ui/separator'
 import ProductPrice from '@/components/shared/product/product-price'
 import Selectvariant from '@/components/shared/product/Selectvariant'

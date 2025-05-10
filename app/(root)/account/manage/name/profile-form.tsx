@@ -1,5 +1,4 @@
 'use client'
-import { updateUser } from '@/lib/actions/user.action'
 import { UserNameSchema } from '@/lib/validator'
 import { IUserName } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
